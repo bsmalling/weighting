@@ -1,6 +1,5 @@
 #! /usr/bin/env ruby
 
-require 'pp'
 require 'set'
 require_relative 'util'
 require_relative 'ga_search'
