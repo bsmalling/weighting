@@ -3,10 +3,13 @@
 require 'set'
 require_relative 'util'
 require_relative 'ga_search'
+require_relative 'random_search'
 
 class Main
 
   def main
+    mode = :ga_search # :ga_search or :random_search or :rim_search
+
     table = ARGF.readlines.map do |line|
       line.strip.split("\t") unless line =~ /^\s*$/ || line =~ /^#/
     end.compact
@@ -18,7 +21,16 @@ class Main
 
     fitness = fitness_closure control, test, ignored_columns    # lamda
     domain = Array.new test.length, Util.make_log_uniform(3.0)  # [lambda, ...]
-    best = GaSearch.new.ga_search domain, fitness, 500          # [weight, ...]
+    case mode
+      when :ga_search
+        best = GaSearch.new.ga_search domain, fitness, 500          # [weight, ...]
+      when :random_search
+        best = RandomSearch.new.random_search domain, fitness, 500          # [weight, ...]
+      when :rim_search
+        raise 'RIM not yet implemented'
+      else
+        raise "Invalid mode: #{mode}"
+    end
 
     a1 = make_aggregates control, ignored_columns               # { total: weight, 'col_n_m': weight, ... }
     a2 = make_aggregates test, ignored_columns, best            # { total: weight, 'col_n_m': weight, ... }
