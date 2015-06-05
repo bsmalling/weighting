@@ -2,7 +2,7 @@ require_relative 'util'
 
 class GaSearch
 
-  def ga_search(domain, fitness, iterations, n = 500, mr = 0.005, elites = 1)
+  def search(domain, fitness, iterations, n = 500, mr = 0.005, elites = 1)
     population = make_random_population domain, fitness, n
 
     (0...iterations).each do |i|

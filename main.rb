@@ -13,8 +13,8 @@ class Main
     table = ARGF.readlines.map do |line|
       line.strip.split("\t") unless line =~ /^\s*$/ || line =~ /^#/
     end.compact
-    # table = [ [column, ...], ... ]
 
+    # table = [ [column, ...], ... ]
     control = table.reject { |row| row[1] == '1' }              # [ [ [column, ...], 1 ], ... ]
     test    = table.reject { |row| row[1] != '1' }              # [ [ [column, ...], 1 ], ... ]
     ignored_columns = Set.new [0,1]
@@ -23,9 +23,9 @@ class Main
     domain = Array.new test.length, Util.make_log_uniform(3.0)  # [lambda, ...]
     case mode
       when :ga_search
-        best = GaSearch.new.ga_search domain, fitness, 500          # [weight, ...]
+        best = GaSearch.new.search domain, fitness, 500         # [weight, ...]
       when :random_search
-        best = RandomSearch.new.random_search domain, fitness, 500  # [weight, ...]
+        best = RandomSearch.new.search domain, fitness, 500     # [weight, ...]
       when :rim_search
         raise 'RIM not yet implemented'
       else
@@ -51,7 +51,7 @@ class Main
     a1 = make_aggregates t1, ignores
     n = t2.length
 
-    -> (weights) {
+    ->(weights) {
       a2 = make_aggregates t2, ignores, weights
       root_mean_square_error a1, a2, n
     }
@@ -65,6 +65,7 @@ class Main
     t.zip(weights).each do |entry|
       row, weight = entry[0], entry[1]
       aggs[:total] += weight
+
       (0...row.length).map do |i|
         next if ignores.include? i
 

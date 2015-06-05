@@ -2,7 +2,7 @@ require_relative 'util'
 
 class RandomSearch
 
-  def random_search(domain, fitness, iterations)
+  def search(domain, fitness, iterations)
     best_candidate = Util.random_solution domain
     best_fitness = fitness.(best_candidate)
 
