@@ -25,7 +25,7 @@ class Main
       when :ga_search
         best = GaSearch.new.ga_search domain, fitness, 500          # [weight, ...]
       when :random_search
-        best = RandomSearch.new.random_search domain, fitness, 500          # [weight, ...]
+        best = RandomSearch.new.random_search domain, fitness, 500  # [weight, ...]
       when :rim_search
         raise 'RIM not yet implemented'
       else
