@@ -1,5 +1,4 @@
 #! /usr/bin/env ruby
-
 require 'set'
 require_relative 'util'
 require_relative 'ga_search'
@@ -25,14 +24,15 @@ class Main
     domain = Array.new test.length, Util.make_log_uniform(3.0)  # [lambda, ...]
     case mode
       when :ga_search
-        best = GaSearch.new.search domain, fitness, iterations      # [weight, ...]
+        best = GaSearch.new.search domain, fitness, iterations
       when :random_search
-        best = RandomSearch.new.search domain, fitness, iterations  # [weight, ...]
+        best = RandomSearch.new.search domain, fitness, iterations
       when :rim_search
-        best = RimSearch.new.search domain, fitness, iterations     # [weight, ...]
+        best = RimSearch.new.search domain, fitness, iterations
       else
         raise "Invalid mode: #{mode}"
     end
+    # best= [weight, ...]
 
     a1 = make_aggregates control, ignored_columns               # { total: weight, 'col_n_m': weight, ... }
     a2 = make_aggregates test, ignored_columns, best            # { total: weight, 'col_n_m': weight, ... }
@@ -60,7 +60,7 @@ class Main
   end
 
   def make_aggregates(t, ignores, weights = nil)
-    aggs = Hash.new # { |hash, key| hash[key] = 0.0 } ?Causes runtime error?
+    aggs = Hash.new # { |hash, key| hash[key] = 0.0 } ?Causes sporadic runtime error?
     weights = t.map { |_| 1 } unless weights
 
     aggs[:total] = 0.0
