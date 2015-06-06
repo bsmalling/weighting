@@ -17,7 +17,7 @@ class RandomSearch
       if f < best_fitness
         best_fitness = f
         best_candidate = candidate
-        puts "new best fitness found: #{best_fitness}"
+        puts "new best fitness found (#{i}): #{best_fitness}"
       end
     end
 

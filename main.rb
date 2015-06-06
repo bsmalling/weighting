@@ -9,6 +9,7 @@ class Main
 
   def main
     mode = :ga_search # :ga_search or :random_search or :rim_search
+    ignored_columns = Set.new [0, 1]
 
     table = ARGF.readlines.map do |line|
       line.strip.split("\t") unless line =~ /^\s*$/ || line =~ /^#/
@@ -17,7 +18,6 @@ class Main
     # table = [ [column, ...], ... ]
     control = table.reject { |row| row[1] == '1' }              # [ [ [column, ...], 1 ], ... ]
     test    = table.reject { |row| row[1] != '1' }              # [ [ [column, ...], 1 ], ... ]
-    ignored_columns = Set.new [0, 1]
 
     fitness = fitness_closure control, test, ignored_columns    # lamda
     domain = Array.new test.length, Util.make_log_uniform(3.0)  # [lambda, ...]
