@@ -4,12 +4,14 @@ require 'set'
 require_relative 'util'
 require_relative 'ga_search'
 require_relative 'random_search'
+require_relative 'rim_search'
 
 class Main
 
   def main
     mode = :ga_search # :ga_search or :random_search or :rim_search
     ignored_columns = Set.new [0, 1]
+    iterations = 500
 
     table = ARGF.readlines.map do |line|
       line.strip.split("\t") unless line =~ /^\s*$/ || line =~ /^#/
@@ -23,11 +25,11 @@ class Main
     domain = Array.new test.length, Util.make_log_uniform(3.0)  # [lambda, ...]
     case mode
       when :ga_search
-        best = GaSearch.new.search domain, fitness, 500         # [weight, ...]
+        best = GaSearch.new.search domain, fitness, iterations      # [weight, ...]
       when :random_search
-        best = RandomSearch.new.search domain, fitness, 500     # [weight, ...]
+        best = RandomSearch.new.search domain, fitness, iterations  # [weight, ...]
       when :rim_search
-        raise 'RIM not yet implemented'
+        best = RimSearch.new.search domain, fitness, iterations     # [weight, ...]
       else
         raise "Invalid mode: #{mode}"
     end
