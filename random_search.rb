@@ -9,6 +9,8 @@ class RandomSearch
     puts "initial fitness: #{best_fitness}"
 
     (0...iterations).each do |i|
+      break if best_fitness == 0
+
       candidate = Util.random_solution domain
       f = fitness.(candidate)
 
@@ -17,7 +19,7 @@ class RandomSearch
         best_candidate = candidate
         puts "new best fitness found: #{best_fitness}"
       end
-    end unless best_fitness == 0.0
+    end
 
     best_candidate
     # returns [weight, ...]
